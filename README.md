@@ -16,14 +16,12 @@ Make sure you load pixi.js (the version needs to be > 5.0.0-rc to get the best p
 ```
 <!-- Jquery is optional, but recommended: -->
 <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
-
-<!-- We have to wait for https://github.com/pixijs/pixi.js/issues/5400 to get fixed to use pixi.js v5: -->
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.0.0-rc/pixi.js"></script>-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.8.5/pixi.js"></script>
+<script src="https://pixijs.download/dev-graphics-batch-pool/pixi.js"></script>
 ```
 
 Then include the SuperParticles.js script and make an instance of SuperParticles:
 ```
+
 <script src="./SuperParticles.js"></script>
 
 <script>
@@ -36,10 +34,22 @@ Then include the SuperParticles.js script and make an instance of SuperParticles
 If you want, you can pass a div container to SuperParticles which then will be used to render the particles:
 
 ```
-var divContainer = $('#myContainer')
-new SuperParticles({
-    container: divContainer
-})
+<body>
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="https://pixijs.download/dev-graphics-batch-pool/pixi.js"></script>
+    <div id="super-particles"></div>
+
+    <script src="./SuperParticles.js"></script>
+
+    <script>
+        window.onload = function(){
+            var divContainer = $('#super-particles')
+            new SuperParticles({
+                container: divContainer
+            })
+        }
+    </script>
+</body>
 ```
 
 You can limit the FPS like this:
