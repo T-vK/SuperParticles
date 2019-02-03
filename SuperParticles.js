@@ -1,8 +1,7 @@
 // Requires requires pixi.js (version > 5.0.0-rc)
 class SuperParticles {
     constructor(cfg={}) {
-        // Deafult config:
-        this.cfg = {
+        this.defaultCfg = {
             useJquery: undefined, // true/false/undefined
             maxFps: 30, // requires pixi.js v5
             autoStartAnimation: true, // true/false
@@ -34,13 +33,25 @@ class SuperParticles {
                 showFps: false, // true/false
             }
         }
-        this.cfg = this._mergeDeep(this.cfg, cfg)
+        this.cfg = cfg
+        this._init()
+    }
+    _init() {
+        this.reinit()
+    }
+    reinit() {
         this.linesLayer = undefined
         this.particles = []
         this.useJquery = (typeof this.cfg.useJquery !== 'undefined') ? this.cfg.useJquery : (typeof jQuery !== 'undefined')
         this.divContainer = this.cfg.container.element
         const {width, height} = this._getDivContainerSize()
         this.app = new PIXI.Application(this.cfg.pixiApp)
+    }
+    get cfg() {
+        return (typeof this._cfg === 'undefined') ? this.defaultCfg : this._cfg
+    }
+    set cfg(cfg) {
+        this._cfg = this._mergeDeep(this.cfg, cfg)
     }
     get divContainer() {
         return this._divContainer
@@ -129,7 +140,7 @@ class SuperParticles {
         }
     }
     _containerApplyApp() {
-        if (typeof this.app === 'object' && typeof this.divContainer === 'object') {
+        if (typeof this.app === 'object' && typeof this.divContainer === 'object' && this.divContainer !== null) {
             if (this.useJquery) {
                 this.divContainer.append(this.app.view)
                 $(window).resize(this._resize.bind(this))
@@ -144,6 +155,11 @@ class SuperParticles {
         if (destroyApp) {
             if (typeof this.app === 'object' && typeof this.app.destroy === 'function') {
                 this.app.destroy(removeView, stageOptions)
+            }
+            if (typeof this.animationTicker === 'object') {
+                this.stopAnimation()
+                this.animationTicker.destroy()
+                this.animationTicker = undefined
             }
             this.linesLayer = undefined
             this.particles = []
@@ -161,13 +177,13 @@ class SuperParticles {
         }
     }
     _destroyContainer(force=false) {
-        if ((force || this.divContainerIsGenerated) && typeof this.divContainer === 'object') {
+        if ((force || this.divContainerIsGenerated) && typeof this.divContainer === 'object' && this.divContainer !== null) {
             if (this.useJquery) {
-                this.divContainer.remove(this.divContainer)
-                this.divContainer = null
+                this.divContainer.remove()
+                this._divContainer = null
             } else {
                 this.divContainer.parentNode.removeChild(this.divContainer)
-                this.divContainer = null
+                this._divContainer = null
             }
         }
     }
