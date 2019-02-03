@@ -12,6 +12,28 @@
                 width:100%;
                 overflow:hidden;
             }
+            #config-container {
+                position: absolute;
+                right: 0px;
+                top: 0px;
+                bottom: 0px;
+                margin: 5px;
+                color: #FFFFFF;
+                /*width: 30%;
+                max-width: 400px;*/
+
+            }
+            #config-container>* {
+                display: block;
+                margin-bottom: 3px;
+                width: 100%;
+            }
+            #config {
+                height: 50%;
+                white-space: pre;
+                overflow-wrap: normal;
+                overflow-x: scroll;
+            }
         </style>
     </head>
     <body>
@@ -19,13 +41,43 @@
         <script src="https://pixijs.download/dev-graphics-batch-pool/pixi.js"></script>
         <script src="./SuperParticles.js"></script>
 
+        <div id="config-container">
+            <button id="toggleAnimation">Stop</button>
+            <!--<textarea id="config"></textarea>
+            <button id="apply">Apply</button>-->
+        </div>
+
         <script>
             window.onload = function(){
-                const superParticles = new SuperParticles({
+                window.sp = new SuperParticles({
                     debug: {
                         showFps: true
                     }
                 })
+
+                $("#toggleAnimation").click(function() {
+                    let btn = $(this)
+                    let text = btn.text()
+                    if (text === 'Stop'){
+                        sp.stopAnimation()
+                        btn.text('Resume')
+                    } else {
+                        sp.startAnimation()
+                        btn.text('Stop')
+                    }
+                })
+                /*
+                // We need to wait for another pixi.js bug to get fixed before we can do all this:
+                $("#apply").click(function() {
+                    let configJson = $("#config").val()
+                    sp.cfg = JSON.parse(configJson)
+                    //debugger
+                    sp.destroy()
+                    sp.reinit()
+                })
+
+                $("#config").val(JSON.stringify(sp.cfg, null, '    '))
+                */
             }
         </script>
     </body>
