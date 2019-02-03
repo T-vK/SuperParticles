@@ -16,7 +16,7 @@ https://t-vk.github.io/SuperParticles/demo.html
 
 Jquery is optional, but recommended.
 Pixi.js is required (preferrably in a version above 5.0.0-rc).
-```
+``` HTML
 <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
 <script src="https://pixijs.download/dev-graphics-batch-pool/pixi.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/T-vK/SuperParticles@master/SuperParticles.js"></script>
@@ -29,7 +29,7 @@ Pixi.js is required (preferrably in a version above 5.0.0-rc).
 
 If you want, you can pass a div container to SuperParticles which then will be used to render the particles:
 
-```
+``` HTML
 <body>
     <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
     <script src="https://pixijs.download/dev-graphics-batch-pool/pixi.js"></script>
@@ -48,7 +48,7 @@ If you want, you can pass a div container to SuperParticles which then will be u
 ```
 
 You can limit the FPS like this:
-```
+``` JavaScript
 new SuperParticles({
     maxFps: 30
 })
@@ -61,7 +61,7 @@ Creates a new SuperParticles instance.
 
 cfg defaults to:
 
-```
+``` JavaScript
 {
     useJquery: undefined, // true/false/undefined
     maxFps: 30, // requires pixi.js v5
