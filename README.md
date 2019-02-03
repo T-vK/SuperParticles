@@ -15,18 +15,12 @@ https://t-vk.github.io/SuperParticles/demo.html
 
 ### How to use
 
-Make sure you load pixi.js (the version needs to be > 5.0.0-rc to get the best performance):
+Jquery is optional, but recommended.
+Pixi.js is required (preferrably in a version above 5.0.0-rc).
 ```
-<!-- Jquery is optional, but recommended: -->
 <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
 <script src="https://pixijs.download/dev-graphics-batch-pool/pixi.js"></script>
-```
-
-Then include the SuperParticles.js script and make an instance of SuperParticles:
-```
-
 <script src="./SuperParticles.js"></script>
-
 <script>
     window.onload = function(){
         var superParticles = new SuperParticles()
