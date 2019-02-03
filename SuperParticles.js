@@ -4,9 +4,12 @@ window.SuperParticles = window.SuperParticles || class SuperParticles {
         if (typeof PIXI === 'undefined') {
             throw new Error("Failed to initialize SuperParticles because Pixi.js was missing!")
         }
-        if (PIXI.VERSION.split('.').shift() < 5) {
+        if (parseInt(PIXI.VERSION.split('.').shift()) < 5) {
             console.warn("Old Pixi.js version detected. Features like FPS limiting won't be available. Switch to a version > 5.0.0-rc if possible.")
         }
+        /*else if (PIXI.VERSION === '5.0.0-rc') {
+            console.warn("This exact version of Pixi.js (5.0.0-rc) is not supported because of a bug. Use a newer version please.")
+        }*/
         this.defaultCfg = {
             useJquery: undefined, // true/false/undefined
             maxFps: 30, // requires pixi.js v5
@@ -186,7 +189,6 @@ window.SuperParticles = window.SuperParticles || class SuperParticles {
     }
     destroy(destroyApp=true, removeView=true, stageOptions=true, removeContainer=true, forceRemoveContainer=false, removeResizeListener=true, removeParticles=true) {
         if (destroyApp) {
-            //debugger
             if (typeof this.app === 'object' && typeof this.app.destroy === 'function') {
                 if (!removeParticles && typeof this.particles !== 'undefined') {
                     for (let particle of this.particles) {
@@ -199,8 +201,6 @@ window.SuperParticles = window.SuperParticles || class SuperParticles {
 
             this.linesLayer = undefined
             if (removeParticles && typeof this.particles !== 'undefined') {
-                //for (let particle of this.particles) {
-                //}
                 //this.particles = []
             }
             this.debugOverlay = undefined
@@ -240,9 +240,7 @@ window.SuperParticles = window.SuperParticles || class SuperParticles {
 
         const particlesToAdd = this.cfg.particles.amount-this.particles.length
         const particlesToRemove = 0-particlesToAdd
-        if (particlesToAdd === 0) {
-            return
-        }
+
         for (let i=0; i<particlesToAdd; i++) {
             const randomCoord = this._getRandomCoord()
             const particle = new PIXI.Graphics()
@@ -258,8 +256,6 @@ window.SuperParticles = window.SuperParticles || class SuperParticles {
             this.app.stage.removeChild(this.particles[0])
             this.particles.shift()
         }
-        console.log(`Added ${particlesToAdd} particles.`)
-        console.log(`Removed ${particlesToRemove} particles.`)
     }
     _createLinesLayer() {
         this.linesLayer = new PIXI.Graphics()
