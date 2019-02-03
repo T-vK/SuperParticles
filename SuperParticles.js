@@ -1,9 +1,10 @@
+// Requires requires pixi.js (version > 5.0.0-rc)
 class SuperParticles {
     constructor(cfg={}) {
         // Deafult config:
         this.cfg = {
             useJquery: undefined, // true/false/undefined
-            maxFps: 60, // requires pixi.js v5
+            maxFps: 30, // requires pixi.js v5
             autoStartAnimation: true, // true/false
             container: {
                 element: undefined,
@@ -19,7 +20,8 @@ class SuperParticles {
                 velocity : 10, // unit: pixels/second
                 color: 0xFFFFFF, // unit: rgb hex color
                 fadeInDuration: 3000, // unit: milliseconds
-                fadeOutDuration: 600 // unit: milliseconds
+                fadeOutDuration: 600, // unit: milliseconds
+                keepRelativePositionOnResize: true, // true/false
             },
             lines: {
                 minDistance: 150, // unit: pixels
@@ -130,12 +132,12 @@ class SuperParticles {
         if (typeof this.app === 'object' && typeof this.divContainer === 'object') {
             if (this.useJquery) {
                 this.divContainer.append(this.app.view)
-                $(window).resize(this.resize.bind(this))
+                $(window).resize(this._resize.bind(this))
             } else {
                 this.divContainer.appendChild(this.app.view)
-                window.addEventListener('resize', this.resize.bind(this))
+                window.addEventListener('resize', this._resize.bind(this))
             }
-            this.resize()
+            this._resize()
         }
     }
     destroy(destroyApp=true, removeView=true, stageOptions=true, removeContainer=true, forceRemoveContainer=false, removeResizeListener=true) {
@@ -154,7 +156,7 @@ class SuperParticles {
             if (this.useJquery) {
                 $(window).off('resize')
             } else {
-                window.removeEventListener('resize', this.resize)
+                window.removeEventListener('resize', this._resize)
             }
         }
     }
@@ -231,8 +233,16 @@ class SuperParticles {
         }
         return {width, height}
     }
-    resize() {
+    _resize() {
         let {width, height} = this._getDivContainerSize()
+        if (this.cfg.particles.keepRelativePositionOnResize) {
+            const oldWidth = this.app.renderer.screen.width
+            const oldHeight = this.app.renderer.screen.height
+            for (const particle of this.particles) {
+                particle.x = particle.x*width/oldWidth
+                particle.y = particle.y*height/oldHeight
+            }
+        }
         this.app.renderer.resize(width, height)
     }
     startAnimation() {
