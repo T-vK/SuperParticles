@@ -114,4 +114,9 @@ Resume the SuperParticles instance.
 
 #### superParticles.destroy()
 
-Destroys the SuperParticles instance. (Don't use the instance after destroying it.)
+Destroys the SuperParticles instance. (If you want to reuse the instance afterwards, you have to call reinit first!)
+(Currently buggy because of https://github.com/pixijs/pixi.js/issues/5404)
+
+#### superParticles.reinit()
+
+Reinitializes the instance. (Useful after destroying it.)
