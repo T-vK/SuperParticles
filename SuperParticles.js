@@ -23,6 +23,7 @@ window.SuperParticles = window.SuperParticles || class SuperParticles {
                 transparent: true,
                 forceFXAA: false,
                 powerPreference: 'high-performance',
+                resolution: 1.0
             },
             particles: {
                 amount: 80, // unit: particles
