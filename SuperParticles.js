@@ -1,5 +1,5 @@
 // Requires requires pixi.js (version > 5.0.0-rc)
-class SuperParticles {
+window.SuperParticles = window.SuperParticles || class SuperParticles {
     constructor(cfg={}) {
         this.defaultCfg = {
             useJquery: undefined, // true/false/undefined
@@ -12,7 +12,7 @@ class SuperParticles {
             pixiApp: { // these are documented here: http://pixijs.download/release/docs/PIXI.Application.html#Application
                 antialias: true,
                 transparent: true,
-                forceFXAA: true,
+                forceFXAA: false,
                 powerPreference: 'high-performance',
             },
             particles: {
