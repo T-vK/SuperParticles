@@ -1,19 +1,19 @@
 # SuperParticles
 
-## Performance-focused alternative to [VincentGarreau's particles.js](https://github.com/VincentGarreau/particles.js)
+Performance-focused alternative to [VincentGarreau's particles.js](https://github.com/VincentGarreau/particles.js)
 
-### Introduction
+## Introduction
 Particles.js is a great project, but it tends to use up the CPU core that it runs on entirely, no matter how you change the config.  
 SuperParticles aims at resolving that issue by using WebGL when possible and also by allowing set an FPS limit.  
 If you have more ideas on what could be done to further improve the performance, feel free to open an issue.
 
-### Gif demo
+## Gif demo
 [![Video](SuperParticlesVideo.gif)](https://t-vk.github.io/SuperParticles/demo.html)
 
-### Live demo
+## Live demo
 https://t-vk.github.io/SuperParticles/demo.html
 
-### How to use
+## How to use
 
 Jquery is optional, but recommended.
 Pixi.js is required (preferrably in a version above 5.0.0-rc).
@@ -56,9 +56,9 @@ new SuperParticles({
 })
 ```
 
-### API
+## API
 
-#### new SuperParticles(cfg)
+### new SuperParticles(cfg)
 Creates a new SuperParticles instance.  
 
 cfg defaults to:
@@ -100,18 +100,18 @@ cfg defaults to:
 
 but you can overwrite individual properties if you like.
 
-#### superParticles.stopAnimation()
+### superParticles.stopAnimation()
 
 Pauses the SuperParticles instance.
 
-#### superParticles.startAnimation()
+### superParticles.startAnimation()
 
 Resume the SuperParticles instance.
 
-#### superParticles.destroy()
+### superParticles.destroy()
 
 Destroys the SuperParticles instance. (If you want to reuse the instance afterwards, you have to call reinit first!)
 
-#### superParticles.reinit()
+### superParticles.reinit()
 
 Reinitializes the instance. (Useful after destroying it.)
