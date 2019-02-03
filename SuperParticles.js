@@ -155,12 +155,9 @@ class SuperParticles {
         if (destroyApp) {
             if (typeof this.app === 'object' && typeof this.app.destroy === 'function') {
                 this.app.destroy(removeView, stageOptions)
+                this._app = undefined
             }
-            if (typeof this.animationTicker === 'object') {
-                this.stopAnimation()
-                this.animationTicker.destroy()
-                this.animationTicker = undefined
-            }
+
             this.linesLayer = undefined
             this.particles = []
             this.debugOverlay = undefined
@@ -265,10 +262,10 @@ class SuperParticles {
         this.app.ticker.autoStart = true
         this.app.ticker.speed = 1
         this.app.ticker.maxFPS = this.cfg.maxFps
-        if (typeof this.animationTicker === 'object') {
-            this.animationTicker.start()
+        if (!this.app.ticker.started) {
+            this.app.ticker.start()
         } else {
-            this.animationTicker = this.app.ticker.add( delta => {
+            this.app.ticker.add( delta => {
                 this.linesLayer.clear()
                 this.linesLayer.lineStyle(this.cfg.lines.thickness, this.cfg.lines.color, 1)
                 const linesDrawn = []
@@ -315,7 +312,7 @@ class SuperParticles {
                     const now = performance.now()
                     if (now > this.debugOverlay.lastUpdate+500) {
                         this.debugOverlay.visible = true
-                        const fps = Math.round(this.animationTicker.FPS)
+                        const fps = Math.round(this.app.ticker.FPS)
                         this.debugOverlay.text = `${fps} FPS`
                         this.debugOverlay.lastUpdate = now
                     }
@@ -326,8 +323,8 @@ class SuperParticles {
         }
     }
     stopAnimation() {
-        if (typeof this.animationTicker === 'object') {
-            this.animationTicker.stop()
+        if (typeof this.app.ticker === 'object') {
+            this.app.ticker.stop()
         }
     }
     _isObject(item) {
