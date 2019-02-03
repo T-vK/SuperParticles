@@ -19,7 +19,7 @@ Pixi.js is required (preferrably in a version above 5.0.0-rc).
 ```
 <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
 <script src="https://pixijs.download/dev-graphics-batch-pool/pixi.js"></script>
-<script src="./SuperParticles.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/T-vK/SuperParticles@master/SuperParticles.js"></script>
 <script>
     window.onload = function(){
         var superParticles = new SuperParticles()
@@ -33,9 +33,8 @@ If you want, you can pass a div container to SuperParticles which then will be u
 <body>
     <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
     <script src="https://pixijs.download/dev-graphics-batch-pool/pixi.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/T-vK/SuperParticles@master/SuperParticles.js"></script>
     <div id="super-particles"></div>
-
-    <script src="./SuperParticles.js"></script>
 
     <script>
         window.onload = function(){
