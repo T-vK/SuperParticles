@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="SuperParticles">
+        <meta name="author" content="T-vK">
+        <style>
+            body,html {
+                margin:0;
+                padding:0;
+                height:100%;
+                width:100%;
+                overflow:hidden;
+            }
+        </style>
+    </head>
+    <body>
+        <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+        <!-- We have to wait for https://github.com/pixijs/pixi.js/issues/5400 to get fixed to use pixi.js v5: -->
+        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.0.0-rc/pixi.js"></script>-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.8.5/pixi.js"></script>
+        <script src="./SuperParticles.js"></script>
+
+        <script>
+            window.onload = function(){
+                const superParticles = new SuperParticles({debug:{showFps:false}})
+            }
+        </script>
+    </body>
+</html>
