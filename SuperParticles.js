@@ -1,6 +1,12 @@
 // Requires requires pixi.js (version > 5.0.0-rc)
 window.SuperParticles = window.SuperParticles || class SuperParticles {
     constructor(cfg={}) {
+        if (typeof PIXI === 'undefined') {
+            throw new Error("Failed to initialize SuperParticles because Pixi.js was missing!")
+        }
+        if (PIXI.VERSION.split('.').shift() < 5) {
+            console.warn("Old Pixi.js version detected. Features like FPS limiting won't be available. Switch to a version > 5.0.0-rc if possible.")
+        }
         this.defaultCfg = {
             useJquery: undefined, // true/false/undefined
             maxFps: 30, // requires pixi.js v5
