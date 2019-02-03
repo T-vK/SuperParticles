@@ -3,8 +3,7 @@
 Performance-focused alternative to [VincentGarreau's particles.js](https://github.com/VincentGarreau/particles.js)
 
 ## Introduction
-Particles.js is a great project, but it tends to use up the CPU core that it runs on entirely, no matter how you change the config.  
-SuperParticles aims at resolving that issue by using WebGL when possible and also by allowing set an FPS limit.  
+SuperParticles aims at resolving the major performance issues that come with particles.js by using WebGL when possible and also by allowing set an FPS limit.
 If you have more ideas on what could be done to further improve the performance, feel free to open an issue.
 
 ## Gif demo
