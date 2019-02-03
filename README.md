@@ -51,7 +51,6 @@ If you want, you can pass a div container to SuperParticles which then will be u
 
 You can limit the FPS like this:
 ```
-var divContainer = $('#myContainer')
 new SuperParticles({
     maxFps: 30
 })
