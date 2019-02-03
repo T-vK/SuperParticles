@@ -7,6 +7,9 @@ Particles.js is a great project, but it tends to use up the CPU core that it run
 SuperParticles aims at resolving that issue by using WebGL when possible and also by allowing set an FPS limit.  
 If you have more ideas on what could be done to further improve the performance, feel free to open an issue.
 
+### Gif demo
+[![Video](SuperParticlesVideo.gif)](https://t-vk.github.io/SuperParticles/demo.html)
+
 ### Live demo
 https://t-vk.github.io/SuperParticles/demo.html
 
