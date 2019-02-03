@@ -11,7 +11,7 @@ Unfortunately we currently have to wait for pixi.js 5 to fix a [bug](https://git
 
 
 ### Live demo
-https://t-vk.github.io/SuperParticles/
+https://t-vk.github.io/SuperParticles/index.html
 
 ### How to use
 
