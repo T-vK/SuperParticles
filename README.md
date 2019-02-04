@@ -6,13 +6,13 @@ Performance-focused alternative to [VincentGarreau's particles.js](https://githu
 SuperParticles aims at resolving the major performance issues that come with particles.js by using WebGL when possible and also by allowing you to limit the frame rate (FPS).
 If you have more ideas on what could be done to further improve the performance, feel free to open an issue.
 
-## Gif demo
+## GIF Demo
 [![Video](SuperParticlesVideo.gif)](https://t-vk.github.io/SuperParticles/demo.html)
 
-## Live demo
+## Live Demo
 https://t-vk.github.io/SuperParticles/demo.html
 
-## How to use
+## How To Use
 
 Jquery is optional, but recommended.
 Pixi.js is required (preferrably in a version above 5.0.0-rc).
