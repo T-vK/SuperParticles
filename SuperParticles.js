@@ -9,23 +9,25 @@ class SuperParticles {
                 element: undefined,
                 backgroundCssRule: "radial-gradient(ellipse at center, rgba(10,46,56,1) 0%,rgba(34,34,34,1) 70%)" // css or null (null: don't modify container background)
             },
-            pixiApp: {
-                antialias : true, // true/false
-                transparent : true, // true/false
+            pixiApp: { // these are documented here: http://pixijs.download/release/docs/PIXI.Application.html#Application
+                antialias: true,
+                transparent: true,
+                forceFXAA: true,
+                powerPreference: 'high-performance',
             },
             particles: {
                 amount: 80, // unit: particles
                 radius: 2, // unit: pixels
                 velocity : 10, // unit: pixels/second
-                color: 0xFFFFFF, // unit: rgb hex color
+                color: "0xFFFFFF", // unit: rgb hex color
                 fadeInDuration: 3000, // unit: milliseconds
                 fadeOutDuration: 600, // unit: milliseconds
                 keepRelativePositionOnResize: true, // true/false
             },
             lines: {
-                minDistance: 150, // unit: pixels
-                color: 0xFFFFFF, // unit: hex color
-                maxOpacity: 0.8, // 1: full opacity; 0: no opacity
+                minDistance: 0.09, // unit: percent (1: 100%; 0: 0%
+                color: "0xFFFFFF", // unit: hex color
+                maxOpacity: 0.4, // 1: full opacity; 0: no opacity
                 thickness: 1, // unit: pixels
                 distanceBasedTransparency: true, // true/false
             },
@@ -37,11 +39,13 @@ class SuperParticles {
         this._init()
     }
     _init() {
+        this.linesLayer = undefined
+        this.particles = []
         this.reinit()
     }
     reinit() {
         this.linesLayer = undefined
-        this.particles = []
+        //this.particles = []
         this.useJquery = (typeof this.cfg.useJquery !== 'undefined') ? this.cfg.useJquery : (typeof jQuery !== 'undefined')
         this.divContainer = this.cfg.container.element
         const {width, height} = this._getDivContainerSize()
@@ -52,6 +56,25 @@ class SuperParticles {
     }
     set cfg(cfg) {
         this._cfg = this._mergeDeep(this.cfg, cfg)
+        if (typeof this.particles !== 'undefined' && this.particles.length > 0) {
+            for (let particle of this.particles) {
+                this._particleApplyCfg(particle)
+            }
+        }
+        if (typeof this.app === 'object') {
+            this.app.ticker.maxFPS = this.cfg.maxFps
+            if (typeof cfg.pixiApp === 'object' && Object.keys(cfg.pixiApp).length > 0) {
+                console.warn('Changing pixiApp options during runtime completely reinitializes the pixi app instance.')
+                this.destroy(true, true, true, false, false, true, false)
+                this.reinit()
+                /*this.stopAnimation()
+                let renderer = this.app.renderer
+                renderer.destroy()
+                renderer = new PIXI.Renderer(this.cfg.pixiApp)
+                this.app.renderer = renderer
+                this.startAnimation()*/
+            }
+        }
     }
     get divContainer() {
         return this._divContainer
@@ -127,11 +150,15 @@ class SuperParticles {
         return this._app
     }
     set app(app) {
-        this.destroy(true, true, true, false) // ensure app is destroyed
+        this.destroy(true, true, true, false, false, false) // ensure app is destroyed
         this._app = app
-        //app.renderer.autoResize = true // depricated
-        app.renderer.autoDensity = true
+        app.renderer.autoDensity = true //app.renderer.autoResize = true // depricated
+        const originalParticlePositions = this.particles.map(particle=>{return{x:particle.x, y:particle.y}})
         this._containerApplyApp()
+        for (let [i,p] of originalParticlePositions.entries()) {
+            this.particles[i].x = p.x
+            this.particles[i].y = p.y
+        }
         this._createParticles()
         this._createLinesLayer()
         this._createDebugOverlay()
@@ -151,15 +178,25 @@ class SuperParticles {
             this._resize()
         }
     }
-    destroy(destroyApp=true, removeView=true, stageOptions=true, removeContainer=true, forceRemoveContainer=false, removeResizeListener=true) {
+    destroy(destroyApp=true, removeView=true, stageOptions=true, removeContainer=true, forceRemoveContainer=false, removeResizeListener=true, removeParticles=true) {
         if (destroyApp) {
+            //debugger
             if (typeof this.app === 'object' && typeof this.app.destroy === 'function') {
+                if (!removeParticles && typeof this.particles !== 'undefined') {
+                    for (let particle of this.particles) {
+                        this.app.stage.removeChild(particle)
+                    }
+                }
                 this.app.destroy(removeView, stageOptions)
                 this._app = undefined
             }
 
             this.linesLayer = undefined
-            this.particles = []
+            if (removeParticles && typeof this.particles !== 'undefined') {
+                //for (let particle of this.particles) {
+                //}
+                //this.particles = []
+            }
             this.debugOverlay = undefined
         }
         if (removeContainer || forceRemoveContainer) {
@@ -184,21 +221,39 @@ class SuperParticles {
             }
         }
     }
+    _particleApplyCfg(particle) {
+        particle.clear()
+        particle.beginFill(this.cfg.particles.color)
+        particle.drawCircle(0, 0, this.cfg.particles.radius)
+        particle.endFill()
+    }
     _createParticles() {
-        this.particles = []
-        for (let i=0; i<this.cfg.particles.amount; i++) {
+        for (let particle of this.particles) {
+            this.app.stage.addChild(particle)
+        }
+
+        const particlesToAdd = this.cfg.particles.amount-this.particles.length
+        const particlesToRemove = 0-particlesToAdd
+        if (particlesToAdd === 0) {
+            return
+        }
+        for (let i=0; i<particlesToAdd; i++) {
             const randomCoord = this._getRandomCoord()
             const particle = new PIXI.Graphics()
-            particle.beginFill(this.cfg.particles.color)
             particle.x = randomCoord.x
             particle.y = randomCoord.y
-            particle.alpha = 0
-            particle.drawCircle(0, 0, this.cfg.particles.radius)
             particle.direction = this._getRandomDirection()
-            particle.endFill()
+            particle.alpha = 0
+            this._particleApplyCfg(particle)
             this.particles.push(particle)
             this.app.stage.addChild(particle)
         }
+        for (let i=0; i<particlesToRemove; i++) {
+            this.app.stage.removeChild(this.particles[0])
+            this.particles.shift()
+        }
+        console.log(`Added ${particlesToAdd} particles.`)
+        console.log(`Removed ${particlesToRemove} particles.`)
     }
     _createLinesLayer() {
         this.linesLayer = new PIXI.Graphics()
@@ -222,6 +277,14 @@ class SuperParticles {
     }
     _getDistance(p1, p2) {
         return Math.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2)
+    }
+    _getDistancePercent(p1, p2) {
+        const dist = this._getDistance(p1, p2)
+        const pdist = this._absoluteDistanceToPercentDistance(dist)
+        return pdist
+    }
+    _absoluteDistanceToPercentDistance(dist) {
+        return dist/this.diagonalSize
     }
     _getRandomCoord() {
         return {
@@ -251,6 +314,7 @@ class SuperParticles {
         if (this.cfg.particles.keepRelativePositionOnResize) {
             const oldWidth = this.app.renderer.screen.width
             const oldHeight = this.app.renderer.screen.height
+            this.diagonalSize = this._getDistance({x:0,y:0},{x:this.app.renderer.screen.width,y:this.app.renderer.screen.height})
             for (const particle of this.particles) {
                 particle.x = particle.x*width/oldWidth
                 particle.y = particle.y*height/oldHeight
@@ -288,7 +352,7 @@ class SuperParticles {
                         }
                     }
                     for (const particle2 of this.particles) {
-                        const distance = this._getDistance(particle, particle2)
+                        const distance = this._getDistancePercent(particle, particle2)
                         const minDistance = this.cfg.lines.minDistance
                         if (distance !== 0 && distance <= minDistance) {
                             const l2 = {p1:{x:particle.x, y: particle.y}, p2:{x:particle2.x, y: particle2.y}}

@@ -3,7 +3,7 @@
 Performance-focused alternative to [VincentGarreau's particles.js](https://github.com/VincentGarreau/particles.js)
 
 ## Introduction
-SuperParticles aims at resolving the major performance issues that come with particles.js by using WebGL when possible and also by allowing you to limit the frame rate (FPS). 
+SuperParticles aims at resolving the major performance issues that come with particles.js by using WebGL when possible and also by allowing you to limit the frame rate (FPS).
 If you have more ideas on what could be done to further improve the performance, feel free to open an issue.
 
 ## Gif demo
@@ -65,29 +65,31 @@ cfg defaults to:
 ```
 {
     useJquery: undefined, // true/false/undefined
-    maxFps: 60, // requires pixi.js v5
+    maxFps: 30, // requires pixi.js v5
     autoStartAnimation: true, // true/false
     container: {
         element: undefined,
         backgroundCssRule: "radial-gradient(ellipse at center, rgba(10,46,56,1) 0%,rgba(34,34,34,1) 70%)" // css or null (null: don't modify container background)
     },
-    pixiApp: {
-        antialias : true, // true/false
-        transparent : true, // true/false
+    pixiApp: { // these are documented here: http://pixijs.download/release/docs/PIXI.Application.html#Application
+        antialias: true,
+        transparent: true,
+        forceFXAA: false,
+        powerPreference: 'high-performance',
     },
     particles: {
         amount: 80, // unit: particles
         radius: 2, // unit: pixels
         velocity : 10, // unit: pixels/second
-        color: 0xFFFFFF, // unit: rgb hex color
+        color: "0xFFFFFF", // unit: rgb hex color
         fadeInDuration: 3000, // unit: milliseconds
         fadeOutDuration: 600, // unit: milliseconds
         keepRelativePositionOnResize: true, // true/false
     },
     lines: {
-        minDistance: 150, // unit: pixels
-        color: 0xFFFFFF, // unit: hex color
-        maxOpacity: 0.8, // 1: full opacity; 0: no opacity
+        minDistance: 0.09, // unit: percent (1: 100%; 0: 0%
+        color: "0xFFFFFF", // unit: hex color
+        maxOpacity: 0.4, // 1: full opacity; 0: no opacity
         thickness: 1, // unit: pixels
         distanceBasedTransparency: true, // true/false
     },
@@ -114,3 +116,9 @@ Destroys the SuperParticles instance. (If you want to reuse the instance afterwa
 ### superParticles.reinit()
 
 Reinitializes the instance. (Useful after destroying it.)
+
+### superParticles.cfg
+
+This is the config object of the instance. You can overwrite the cfg object during runtime.
+E.g. `superParticles.cfg = { pixiApp: { antialiasing: true } }`  
+Don't do `superParticles.cfg.pixiApp.antialiasing = true`

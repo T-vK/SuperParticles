@@ -14,22 +14,23 @@
             }
             #config-container {
                 position: absolute;
-                right: 0px;
-                top: 0px;
+                right: 5px;
+                top: 5px;
                 bottom: 0px;
-                margin: 5px;
                 color: #FFFFFF;
                 width: 30%;
                 max-width: 400px;
 
             }
-            #config-container>* {
+            #config-container>button {
+                margin-bottom: 3px;
+                width: 24%;
+            }
+            #config {
                 display: block;
                 margin-bottom: 3px;
                 width: 100%;
-            }
-            #config {
-                height: 50%;
+                height: 60%;
                 white-space: pre;
                 overflow-wrap: normal;
                 overflow-x: scroll;
@@ -42,9 +43,8 @@
         <script src="./SuperParticles.js"></script>
 
         <div id="config-container">
-            <button id="toggleAnimation">Stop</button>
             <textarea id="config"></textarea>
-            <button id="apply">Apply</button>
+            <button id="apply">Apply</button> <button id="toggleAnimation">Stop</button> <button id="hide">Hide</button> <button id="close">Close</button>
         </div>
 
         <script>
@@ -56,8 +56,8 @@
                 })
 
                 $("#toggleAnimation").click(function() {
-                    let btn = $(this)
-                    let text = btn.text()
+                    const btn = $(this)
+                    const text = btn.text()
                     if (text === 'Stop'){
                         sp.stopAnimation()
                         btn.text('Resume')
@@ -67,17 +67,38 @@
                     }
                 })
 
-                // We need to wait for another pixi.js bug to get fixed before we can do all this:
                 $("#apply").click(function() {
-                    let configJson = $("#config").val()
+                    const configJson = $("#config").val()
                     sp.cfg = JSON.parse(configJson)
-                    //debugger
-                    sp.destroy()
-                    sp.reinit()
                 })
+                $("#hide").click(function() {
+                    const hideBtn = $(this)
+                    const hideBtnText = hideBtn.text()
 
+                    const configEl = $('#config')
+                    const applyBtn = $('#apply')
+                    const stopBtn = $('#toggleAnimation')
+                    const closeBtn = $('#close')
+                    if (hideBtnText === 'Hide'){
+                        configEl.hide()
+                        applyBtn.hide()
+                        stopBtn.hide()
+                        closeBtn.hide()
+                        hideBtn.css({position:'absolute', top:'0px', right:'0px'})
+                        hideBtn.text('Show')
+                    } else {
+                        configEl.show()
+                        applyBtn.show()
+                        stopBtn.show()
+                        closeBtn.show()
+                        hideBtn.css({position:'relative'})
+                        hideBtn.text('Hide')
+                    }
+                })
+                $("#close").click(function() {
+                    $('#config-container').hide()
+                })
                 $("#config").val(JSON.stringify(sp.cfg, null, '    '))
-                
             }
         </script>
     </body>
