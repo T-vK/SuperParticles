@@ -85,7 +85,7 @@
                         stopBtn.hide()
                         closeBtn.hide()
                         hideBtn.css({position:'absolute', top:'0px', right:'0px'})
-                        hideBtn.text('Show')
+                        hideBtn.text('Config')
                     } else {
                         configEl.show()
                         applyBtn.show()
@@ -99,6 +99,7 @@
                     $('#config-container').hide()
                 })
                 $("#config").val(JSON.stringify(sp.cfg, null, '    '))
+                $("#hide").click()
             }
         </script>
     </body>
