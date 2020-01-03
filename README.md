@@ -38,7 +38,7 @@ If you want, you can pass a div container to SuperParticles which then will be u
 
     <script>
         window.onload = function(){
-            var divContainer = $('#super-particles')
+            var divContainer = '#super-particles'
             new SuperParticles({
                 container: divContainer
             })
