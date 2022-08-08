@@ -317,7 +317,7 @@ window.SuperParticles = window.SuperParticles || class SuperParticles {
         if (this.cfg.particles.keepRelativePositionOnResize) {
             const oldWidth = this.app.renderer.screen.width
             const oldHeight = this.app.renderer.screen.height
-            this.diagonalSize = this._getDistance({x:0,y:0},{x:this.app.renderer.screen.width,y:this.app.renderer.screen.height})
+            this.diagonalSize = this._getDistance({x:0,y:0},{x:width,y:height})
             for (const particle of this.particles) {
                 particle.x = particle.x*width/oldWidth
                 particle.y = particle.y*height/oldHeight
